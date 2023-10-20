@@ -4,10 +4,10 @@ public class LinqQueries
 
     public LinqQueries()
     {
-        using(StreamReader reader = new StreamReader("books.json"))
+        using (StreamReader reader = new StreamReader("books.json"))
         {
             string json = reader.ReadToEnd();
-            this.librosCollection = System.Text.Json.JsonSerializer.Deserialize<List<Book>>(json, new System.Text.Json.JsonSerializerOptions() {PropertyNameCaseInsensitive = true});
+            this.librosCollection = System.Text.Json.JsonSerializer.Deserialize<List<Book>>(json, new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
     }
 
@@ -41,22 +41,37 @@ public class LinqQueries
 
     public bool TodosLosLibrosTienenStatus()
     {
-        return librosCollection.All(p=> p.Status!= string.Empty);
+        return librosCollection.All(p => p.Status != string.Empty);
     }
 
     public bool SiAlgunLibroFuePublicado2005()
     {
-        return librosCollection.Any(p=> p.PublishedDate.Year == 2005);
+        return librosCollection.Any(p => p.PublishedDate.Year == 2005);
     }
 
     //----------------------------------CONTAINS----------------------------------
+
     // retornar los elementos que pertenezcan a la categoria de Python
     public IEnumerable<Book> LibrosdePython()
     {
         //extension method
-        return librosCollection.Where(p=> p.Categories.Contains("Python"));
-        
+        return librosCollection.Where(p => p.Categories.Contains("Python"));
+
         //// query expression
         //return from b in librosCollection where b.Categories.Contains("Python") select b;
+    }
+
+    //----------------------------------ORDER BY----------------------------------
+
+    // retornar los elementos que pertenezcan a la categoria de Java ordenados de forma ascendente
+    public IEnumerable<Book> LibrosdeJava()
+    {
+        return librosCollection.Where(b=> b.Categories.Contains("Java")).OrderBy(b=> b.Title);
+    }
+
+    // retornar los elementos que pertenezcan a la categoria de Java ordenados de forma descente
+    public IEnumerable<Book> Librosde450pag()
+    {
+        return librosCollection.Where(b=> b.PageCount > 450).OrderByDescending(b=> b.PageCount); 
     }
 }

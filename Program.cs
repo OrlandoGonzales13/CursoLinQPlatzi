@@ -22,8 +22,14 @@
 ////---------------------------------- CONTAINS----------------------------------
 
 //Libros de python
-ImprimirValores(queries.LibrosdePython());
+//ImprimirValores(queries.LibrosdePython());
 
+////---------------------------------- ORDER BY----------------------------------
+//Libros de java ordenados por nombre
+//ImprimirValores(queries.LibrosdeJava());
+
+//Libros con mas de 450 paginas ordenados por numero de paginas descendente
+ImprimirValores(queries.Librosde450pag());
 
 
 //PARA IMPRIMIR EN CONSOLA-----------------------------------------------------------------------
