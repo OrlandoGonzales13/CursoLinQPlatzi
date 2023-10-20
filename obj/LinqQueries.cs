@@ -7,7 +7,7 @@ public class LinqQueries
         using(StreamReader reader = new StreamReader("books.json"))
         {
             string json = reader.ReadToEnd();
-            this.librosCollection = System.Text.Json.JJsonSerializer.Deserialize<List<Book>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!
+            this.librosCollection = System.Text.Json.JsonSerializer.Deserialize<List<Book>>(json, new System.Text.Json.JsonSerializerOptions() {PropertyNameCaseInsensitive = true});
         }
     }
 
@@ -16,20 +16,32 @@ public class LinqQueries
         return librosCollection;
     }
 
-    public IEnumerable<Book> LibrosDespuesdel2000(){
+    public IEnumerable<Book> LibrosDespuesdel2000()
+    {
         //extension method
         //return librosCollection.Where(p=> p.PublishedDate.Year > 2000);
 
-        //query expression
-        return from l in librosCollection  where l.PublishedDate.Year >2000 select l;
+        //query expresion
+
+        return from l in librosCollection where l.PublishedDate.Year > 2000 select l;
     }
 
-    public IEnumerable<Book> LibrosConMasDe250pagConPalabrasInAction()
+    public IEnumerable<Book> LibrosConMasde250PagConPalabrasInAction()
     {
-        //extemsion methods
-        //return librosCollection.Where(p=> p.PageCount > 250 && p.Title.Contains("in Action"))
+        //extension methods
+        //return librosCollection.Where(p=> p.PageCount > 250 && p.Title.Contains("in Action"));
 
         //query expression
-        return from l in librosCollection where l.PageCount >250 && l.Title.Contains("in Action") select l;
+        return from l in librosCollection where l.PageCount > 250 && l.Title.Contains("in Action") select l;
+    }
+
+    public bool TodosLosLibrosTienenStatus()
+    {
+        return librosCollection.All(p=> p.Status!= string.Empty);
+    }
+
+    public bool SiAlgunLibroFuePublicado2005()
+    {
+        return librosCollection.Any(p=> p.PublishedDate.Year == 2005);
     }
 }
